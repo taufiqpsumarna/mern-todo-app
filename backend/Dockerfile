@@ -11,6 +11,10 @@ COPY . .
 
 RUN npm install --silent
 
+#Set ENV
+ARG DB_SERVER
+ENV DB_SERVER=$DB_SERVER
+
 # Copy app source code
 COPY . .
 
