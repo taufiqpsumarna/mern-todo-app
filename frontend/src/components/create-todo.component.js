@@ -51,7 +51,7 @@ export default class CreateTodo extends Component {
             todo_completed: this.state.todo_completed
         };
 
-        axios.post('http://process.env.API_SERVER/todos/add', newTodo)
+        axios.post('http://${process.env.API_SERVER}:${process.env.API_PORT}/todos/add', newTodo)
             .then(res => console.log(res.data));
 
         this.setState({
