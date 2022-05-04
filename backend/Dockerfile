@@ -14,6 +14,8 @@ RUN npm install --silent
 #Set ENV
 ARG DB_SERVER
 ENV DB_SERVER=$DB_SERVER
+ARG DB_PORT
+ENV DB_PORT=$DB_PORT
 
 # Copy app source code
 COPY . .
