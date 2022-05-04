@@ -14,7 +14,7 @@ let Todo = require('./todo.model');
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://${process.env.DB_SERVER}', { useNewUrlParser: true });
+mongoose.connect('mongodb://${process.env.DB_SERVER}:${process.env.DB_PORT}', { useNewUrlParser: true });
 const connection = mongoose.connection;
 
 connection.once('open', function() {
