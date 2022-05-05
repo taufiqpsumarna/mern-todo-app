@@ -14,9 +14,10 @@ pipeline {
     }
 
     stage('Deploy To ECR') {
-    docker.withRegistry("https://559559966174.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:credential-id") {
-    docker.image("${BUILD_TAG}}").push()
-    }
+        steps {
+        docker.withRegistry("https://559559966174.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:credential-id"){ 
+        docker.image("${BUILD_TAG}}").push()
+        }
     }
   }
 }
