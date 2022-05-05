@@ -1,22 +1,21 @@
 pipeline {
-    agent any
-
+   
     stages {
         stage('Build 🛠️') {
-            steps {
-                sh 'docker --version'
+            steps{
+            sh 'docker build -t todo-frontend .' 
+            sh 'docker tag todo-frontend:$BUILD_NUMBER 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:$BUILD_NUMBER'
             }
         }
         stage('Test 🔬') {
             steps {
-                echo 'Testing..'
+                echo 'Testing Sonarqube'
             }
         }
     
         stage('Deploy To AWS ECR 📦') {
             steps {
-                echo 'Deploying....'
+            sh 'docker push 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:$BUILD_NUMBER'
             }
         }
     }
-}
