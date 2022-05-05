@@ -13,7 +13,7 @@ pipeline {
             }
         }
     
-        stage('Deploy To K8S 🚢') {
+        stage('Deploy To AWS ECR 📦') {
             steps {
                 echo 'Deploying....'
             }
