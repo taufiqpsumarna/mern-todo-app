@@ -24,13 +24,13 @@ pipeline {
         // Image Test with Sonarqube
         stage('Sonarqube Scan') {
         environment {
-            scannerHome = tool 'SonarQubeScanner'
+            scannerHome = tool 'SonarqubeScanner'
         }
             steps {
             withSonarQubeEnv('sonarqube') {
                 sh "${scannerHome}/bin/sonar-scanner"
             }
-            timeout(time: 5, unit: 'MINUTES') {
+            timeout(time: 2, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
             }
         }
