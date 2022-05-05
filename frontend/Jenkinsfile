@@ -5,17 +5,18 @@ pipeline {
         stage('Build 🛠️') {
             steps {
                 echo 'Building..'
+            }
         }
         stage('Test 🔬') {
             steps {
                 echo 'Testing..'
             }
         }
+    
         stage('Deploy To K8S 🚢') {
             steps {
                 echo 'Deploying....'
             }
         }
     }
-}
 }
