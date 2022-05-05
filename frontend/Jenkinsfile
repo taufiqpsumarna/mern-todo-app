@@ -1,24 +1,46 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
+    agent any
+    environment {
+        AWS_ACCOUNT_ID = "559559966174"
+        AWS_DEFAULT_REGION = "us-east-2"
+        IMAGE_REPO_NAME = "todo-frontend"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+    }
+
+    // Login To AWS ECR
+    stage('Logging into AWS ECR') {
         steps {
-            sh 'docker build -t ${env.JOB_NAME} -f ./frontend/' 
+            script {
+               sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+            }
         }
     }
 
-    stage('Tag') {
-        steps { 
-            sh 'docker tag ${BUILD_TAG} 559559966174.dkr.ecr.us-east-2.amazonaws.com/${BUILD_TAG}'
+    // Building Docker images
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    sh "docker build -t ${IMAGE_REPO_NAME} ./frontend/" //if Dockerfile present same as Jenkins use this >> docker build -t ${IMAGE_REPO_NAME} .
+                }
+            }
         }
     }
+}
 
-    stage('Deploy To ECR') {
-        steps {
-        docker.withRegistry("https://559559966174.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:credential-id"){ 
-        docker.image("${BUILD_TAG}}").push()
+// Uploading Docker images into AWS ECR
+stage('Pushing to ECR') {
+    steps {
+        script {
+           sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+           sh "docker push ${REPOSITORY_URI}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
         }
     }
-  }
 }
 }
+}
+
+// reference
+//https://medium.com/@vijulpatel865/building-docker-image-using-jenkins-pipeline-push-it-to-aws-ecr-aa02cc7a295e
+//https://wiki.jenkins.io/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-belowJenkinsSetEnvironmentVariables
