@@ -4,7 +4,7 @@ FROM node:14 as builder
 #Set Wokrdir and Copy Context
 WORKDIR /app
 COPY package.json .
-RUN npm install
+RUN npm install --quiet
 COPY . .
 
 #Set ENV
