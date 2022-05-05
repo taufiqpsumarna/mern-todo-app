@@ -1,25 +1,17 @@
 pipeline {
-  agent {
-    docker { image 'node:latest' }
-  }
+  agent any
   stages {
-    stage('Install') {
-      steps { sh 'npm install' }
+    stage('Set Context') {
+        steps { sh 'docker build -t todo-frontend .' }
+        steps { sh 'docker tag todo-frontend:latest 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest' }
     }
 
     stage('Test') {
-      parallel {
-        stage('Static code analysis') {
-            steps { sh 'npm run-script lint' }
-        }
-        stage('Unit tests') {
-            steps { sh 'npm run-script test' }
-        }
-      }
+        steps { sh 'echo test'}
     }
 
-    stage('Build') {
-      steps { sh 'npm run-script build' }
+    stage('Deploy') {
+      steps { sh 'docker push 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest' }
     }
   }
 }
