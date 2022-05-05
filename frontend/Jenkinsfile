@@ -4,7 +4,6 @@ pipeline {
         AWS_ACCOUNT_ID = "559559966174"
         AWS_DEFAULT_REGION = "us-east-2"
         IMAGE_REPO_NAME = "todo-frontend"
-        IMAGE_TAG = "${BUILD_NUMBER}"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
     stages {
@@ -25,8 +24,8 @@ pipeline {
         // Uploading Docker images into AWS ECR
         stage('Pushing to ECR') {
             steps {
-                    sh "docker tag ${IMAGE_REPO_NAME}:latest ${REPOSITORY_URI}/${IMAGE_REPO_NAME}:latest"
-                    sh "docker push ${REPOSITORY_URI}/${IMAGE_REPO_NAME}:latest"
+                    sh "docker tag ${IMAGE_REPO_NAME}:${BUILD_NUMBER} ${REPOSITORY_URI}:latest"
+                    sh "docker push ${REPOSITORY_URI}:latest"
             }
         }
     }
