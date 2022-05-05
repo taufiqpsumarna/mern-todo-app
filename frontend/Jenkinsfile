@@ -3,20 +3,20 @@ pipeline {
   stages {
     stage('Build') {
         steps {
-            sh 'docker build -t todo-frontend ./frontend/' 
+            sh 'docker build -t ${env.JOB_NAME} -f ./frontend/' 
         }
     }
 
     stage('Tag') {
         steps { 
-            sh 'docker tag todo-frontend:latest 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest'
+            sh 'docker tag ${BUILD_TAG} 559559966174.dkr.ecr.us-east-2.amazonaws.com/${BUILD_TAG}'
         }
     }
 
-    stage('Deploy') {
-      steps { 
-          sh 'docker push 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest' 
-      }
+    stage('Deploy To ECR') {
+    docker.withRegistry("https://559559966174.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:credential-id") {
+    docker.image("${BUILD_TAG}}").push()
+    }
     }
   }
 }
