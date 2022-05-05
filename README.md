@@ -1,5 +1,5 @@
 # Sonarqube Report
-
+[![Quality gate](https://sonarqube.todo.taufiqpsumarna.my.id/api/project_badges/quality_gate?project=taufiqpsumarna_mern-todo-app_AYCVIYzkPqrbmCEfdflW&token=a7411ed603770e5ae70bfddd83c392a3a51c532b)](https://sonarqube.todo.taufiqpsumarna.my.id/dashboard?id=taufiqpsumarna_mern-todo-app_AYCVIYzkPqrbmCEfdflW)
 
 # How to use this repo
 
