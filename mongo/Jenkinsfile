@@ -1,21 +1,41 @@
 Jenkinsfile (Declarative Pipeline)
 pipeline {
     agent any
-
     stages {
-        stage('Build 🛠️') {
-            steps {
-                echo 'Building..'
+         stage('Clone repository 📄') { 
+            steps { 
+                script{
+                checkout scm
+                }
+            }
         }
+    stages {
+        stage('Build Image 🛠️') {
+            script{
+                 app = docker.build("underwater")
+                }
         stage('Test 🔬') {
-            steps {
-                echo 'Testing..'
+            agent {
+                docker {
+                    image 'mongo:3.6-xenial'
+                    // Run the container on the node specified at the
+                    // top-level of the Pipeline, in the same workspace,
+                    // rather than on a new node entirely:
+                    reuseNode true
+                    stage {
+                        stage (Configure Environment)
+                        steps {
+                            sh 'mongod --version'
+                        }
+                    }
+                }
             }
         }
-        stage('Deploy To K8S 🚢') {
-            steps {
-                echo 'Deploying....'
-            }
+        stage('Deploy To AWS ECR 🚢') {
+            script{
+                    docker.withRegistry('https://559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-mongo', 'ecr:us-east-2:aws-credentials') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
         }
     }
 }
