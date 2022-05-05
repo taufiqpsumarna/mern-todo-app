@@ -2,7 +2,8 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-        steps { 
+        steps {
+            sh 'cd frontend/'  
             sh 'docker build -t todo-frontend .' 
         }
     }
