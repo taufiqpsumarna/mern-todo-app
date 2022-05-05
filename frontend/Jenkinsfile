@@ -21,6 +21,19 @@ pipeline {
                 }
             }
 
+        // Image Test with Sonarqube
+        node {
+        stage('SCM') {
+            checkout scm
+        }
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'SonarScanner';
+            withSonarQubeEnv() {
+            sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
+        }
+
         // Uploading Docker images into AWS ECR
         stage('Pushing to ECR') {
             steps {
