@@ -36,3 +36,4 @@ pipeline {
 // reference
 //https://medium.com/@vijulpatel865/building-docker-image-using-jenkins-pipeline-push-it-to-aws-ecr-aa02cc7a295e
 //https://wiki.jenkins.io/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-belowJenkinsSetEnvironmentVariables
+//Don't Forget To Install AWS CLI on Jenkins server
