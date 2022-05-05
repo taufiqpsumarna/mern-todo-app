@@ -3,10 +3,10 @@ pipeline {
     stages {
         stage('Build 🛠️') {
             steps{
-            sh 'cd frontend'
+            sh 'cd frontend/'
             sh 'docker build -t todo-frontend .' 
             sh 'docker tag todo-frontend:$BUILD_NUMBER 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:$BUILD_NUMBER'
-            }
+            } 
         }
         stage('Test 🔬') {
             steps {
