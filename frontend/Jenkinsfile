@@ -1,17 +1,22 @@
 pipeline {
   agent any
   stages {
-    stage('Set Context') {
-        steps { sh 'docker build -t todo-frontend .' }
-        steps { sh 'docker tag todo-frontend:latest 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest' }
+    stage('Build') {
+        steps { 
+            sh 'docker build -t todo-frontend .' 
+        }
     }
 
-    stage('Test') {
-        steps { sh 'echo test'}
+    stage('Tag') {
+        steps { 
+            sh 'docker tag todo-frontend:latest 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest'
+        }
     }
 
     stage('Deploy') {
-      steps { sh 'docker push 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest' }
+      steps { 
+          sh 'docker push 559559966174.dkr.ecr.us-east-2.amazonaws.com/todo-frontend:latest' 
+      }
     }
   }
 }
